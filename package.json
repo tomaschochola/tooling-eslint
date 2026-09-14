@@ -24,7 +24,7 @@
         "typescript": "npm:@typescript/typescript6@^6.0.2",
         "typescript-eslint": "^8.70.0"
     },
-    "description": "Shared ESLint configuration builder and presets for JavaScript, TypeScript, React Hooks, and Node.js.",
+    "description": "Shared ESLint configuration builder and scaffolds for JavaScript, TypeScript, React Hooks, and Node.js.",
     "devDependencies": {
         "@tomaschochola/tooling-prettier": "git+https://github.com/tomaschochola/tooling-prettier.git#main",
         "@tomaschochola/tooling-trimmer": "git+https://github.com/tomaschochola/tooling-trimmer.git#main"
