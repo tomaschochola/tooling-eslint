@@ -46,13 +46,7 @@
         "TomasChochola",
         "Tomas Chochola",
         "Tomáš Chochola",
-        "code-quality",
-        "eslint",
-        "javascript",
-        "linting",
-        "react",
-        "tooling-eslint",
-        "typescript"
+        "tooling-eslint"
     ],
     "license": "CC-BY-ND-4.0",
     "main": "./src/index.js",
