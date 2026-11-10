@@ -6,20 +6,7 @@ import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import typescript from 'typescript-eslint';
 
-const configurations = Object.freeze([
-    '**/*.config.cts',
-    '**/*.config.cjs',
-    '**/*.config.js',
-    '**/*.config.mjs',
-    '**/*.config.mts',
-    '**/*.config.ts',
-    '**/.*rc.cts',
-    '**/.*rc.cjs',
-    '**/.*rc.js',
-    '**/.*rc.mjs',
-    '**/.*rc.mts',
-    '**/.*rc.ts',
-]);
+const configurations = Object.freeze(['**/*.config.cts', '**/*.config.cjs', '**/*.config.js', '**/*.config.mjs', '**/*.config.mts', '**/*.config.ts', '**/.*rc.cts', '**/.*rc.cjs', '**/.*rc.js', '**/.*rc.mjs', '**/.*rc.mts', '**/.*rc.ts']);
 const declarations = Object.freeze(['**/*.d.cts', '**/*.d.mts', '**/*.d.ts', '**/*.d.*.ts']);
 const javascript = Object.freeze(['**/*.cjs', '**/*.js', '**/*.mjs']);
 const jsx = Object.freeze(['**/*.jsx']);

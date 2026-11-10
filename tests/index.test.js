@@ -21,15 +21,7 @@ test('file patterns are immutable', () => {
     assert.equal(Object.isFrozen(filePatterns), true);
     assert.deepEqual(Object.keys(filePatterns), ['configurations', 'declarations', 'javascript', 'jsx', 'playwright', 'scripts', 'tsx', 'typescript']);
     assert.deepEqual(filePatterns.declarations, ['**/*.d.cts', '**/*.d.mts', '**/*.d.ts', '**/*.d.*.ts']);
-    assert.deepEqual(filePatterns.playwright, [
-        '**/playwright.config.cts',
-        '**/playwright.config.mts',
-        '**/playwright.config.ts',
-        'tests/**/*.cts',
-        'tests/**/*.mts',
-        'tests/**/*.ts',
-        'tests/**/*.tsx',
-    ]);
+    assert.deepEqual(filePatterns.playwright, ['**/playwright.config.cts', '**/playwright.config.mts', '**/playwright.config.ts', 'tests/**/*.cts', 'tests/**/*.mts', 'tests/**/*.ts', 'tests/**/*.tsx']);
 
     for (const patterns of Object.values(filePatterns)) {
         assert.equal(Object.isFrozen(patterns), true);
@@ -123,32 +115,13 @@ test('native browser module rules enforce runtime-resolvable imports', async () 
         .addBrowserGlobals({ files: ['src/**/*.js'] })
         .addJavaScriptRecommendedRules({ files: filePatterns.javascript })
         .addNativeBrowserModuleRules({ files: ['src/**/*.js'] });
-    const valid = await lintText(
-        builder,
-        "import data from './data.json' with { type: 'json' };\nimport './module.js';\nexport * from '../shared/module.mjs';\nconsole.log(data);\nvoid import('./lazy.js');\nvoid import('./lazy.json', { with: { type: 'json' } });\n",
-        'src/valid.js',
-    );
-    const invalid = await lintText(
-        builder,
-        "import 'package';\nimport './legacy.cjs';\nexport { value } from '@scope/package';\nexport * from 'https://example.com/module.js';\nvoid import('package');\nconst specifier = './module.js';\nvoid import(specifier);\nvoid import(1);\nvoid import(`./${specifier}.js`);\nvoid import('./legacy.cjs');\nvoid import('/absolute/module.js');\n",
-        'src/invalid.js',
-    );
+    const valid = await lintText(builder, "import data from './data.json' with { type: 'json' };\nimport './module.js';\nexport * from '../shared/module.mjs';\nconsole.log(data);\nvoid import('./lazy.js');\nvoid import('./lazy.json', { with: { type: 'json' } });\n", 'src/valid.js');
+    const invalid = await lintText(builder, "import 'package';\nimport './legacy.cjs';\nexport { value } from '@scope/package';\nexport * from 'https://example.com/module.js';\nvoid import('package');\nconst specifier = './module.js';\nvoid import(specifier);\nvoid import(1);\nvoid import(`./${specifier}.js`);\nvoid import('./legacy.cjs');\nvoid import('/absolute/module.js');\n", 'src/invalid.js');
 
     assert.equal(valid.errorCount, 0);
     assert.deepEqual(
         invalid.messages.map(({ ruleId }) => ruleId),
-        [
-            'no-restricted-imports',
-            'no-restricted-imports',
-            'no-restricted-imports',
-            'no-restricted-imports',
-            'no-restricted-syntax',
-            'no-restricted-syntax',
-            'no-restricted-syntax',
-            'no-restricted-syntax',
-            'no-restricted-syntax',
-            'no-restricted-syntax',
-        ],
+        ['no-restricted-imports', 'no-restricted-imports', 'no-restricted-imports', 'no-restricted-imports', 'no-restricted-syntax', 'no-restricted-syntax', 'no-restricted-syntax', 'no-restricted-syntax', 'no-restricted-syntax', 'no-restricted-syntax'],
     );
 });
 
@@ -238,10 +211,7 @@ test('TypeScript, React Hooks, and Sonar configurations compose', async (context
             files: ['sample.ts', 'sample.tsx', 'types.d.ts'],
         }),
     );
-    await writeFile(
-        join(directory, 'sample.ts'),
-        "import type { External } from 'external-types';\nexport type { External } from 'external-types';\nexport type * from 'external-types';\nexport type Answer = External;\nexport const answer = 42;\n",
-    );
+    await writeFile(join(directory, 'sample.ts'), "import type { External } from 'external-types';\nexport type { External } from 'external-types';\nexport type * from 'external-types';\nexport type Answer = External;\nexport const answer = 42;\n");
     await writeFile(join(directory, 'sample.tsx'), 'export const component = <main>answer</main>;\n');
     await writeFile(join(directory, 'types.d.ts'), "declare module 'external-types' {\n    export interface External {\n        readonly value: string;\n    }\n}\n");
 
